@@ -1,0 +1,89 @@
+/* Floating Button */
+
+.fab-container{
+    position:fixed;
+    bottom:25px;
+    right:25px;
+    z-index:9999;
+}
+
+.fab-main{
+    width:65px;
+    height:65px;
+    border:none;
+    border-radius:50%;
+    background:#007bff;
+    color:#fff;
+    font-size:34px;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(0,0,0,.35);
+    transition:.4s;
+}
+
+.fab-main:hover{
+    transform:rotate(180deg);
+}
+
+.fab-item{
+    position:absolute;
+    right:0;
+    width:230px;
+    height:55px;
+    border-radius:30px;
+    background:#111;
+    color:#fff;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    gap:12px;
+    padding:0 18px;
+    opacity:0;
+    pointer-events:none;
+    transition:.4s;
+    box-shadow:0 5px 15px rgba(0,0,0,.25);
+    font-weight:600;
+}
+
+.fab-item:hover{
+    background:#007bff;
+}
+
+.fab-container.active .fab-item{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.fab-container.active .item1{
+    transform:translateY(-75px);
+}
+
+.fab-container.active .item2{
+    transform:translateY(-145px);
+}
+
+.fab-container.active .item3{
+    transform:translateY(-215px);
+}
+
+.fab-container.active .item4{
+    transform:translateY(-285px);
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.fab-main{
+    width:58px;
+    height:58px;
+    font-size:30px;
+}
+
+.fab-item{
+    width:190px;
+    height:50px;
+    font-size:14px;
+}
+
+}

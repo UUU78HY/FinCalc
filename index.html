@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinCalc Pro | All-in-One Financial Calculators</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts & Chart.js -->
+      
+     <!-- Floating Action Menu -->
+      <div class="fab-container">
+
+  <a href=" https://uuu78hy.github.io/casio-colculator/" class="fab-item item4">
+    💡 <span>cosio colculator</span>
+  </a>
+
+  <a href="https://uuu78hy.github.io/MyPortfolio/" class="fab-item item3">
+    💻 <span>Visit profile</span>
+  </a>
+
+  <a href="https://attached-assets--santoshhsjskak.replit.app" class="fab-item item2">
+    📄 <span>Solutions</span>
+  </a>
+
+  <a href="https://www.instagram.com/prakashsahu22684?igsh=MTBrdXpsdW93YnBxbQ==" class="fab-item item1">
+    📞 <span>Contact Me</span>
+  </a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdddn2Z2zbp1IVN8yUoBiBw1cZ0QOgXC6eIQtvJuuiWlBZDmw/viewform?usp=publish-editor" class="fab-item item0">
+    📄 <span>Registration</span>
+  </a>
+
+  <button class="fab-main" id="fabBtn">+</button>
+
+</div>
+<script src="script.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --card-border: #334155;
+            --accent: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-glow: rgba(99, 102, 241, 0.25);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --text-highlight: #38bdf8;
+            --secondary-green: #10b981;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #38bdf8, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Hero / Navigation Tabs */
+        .nav-container {
+            max-width: 1200px;
+            margin: 2rem auto 1rem;
+            padding: 0 1.5rem;
+            width: 100%;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.75rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--card-border) transparent;
+        }
+
+        .nav-tab {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-tab:hover {
+            border-color: var(--accent);
+            color: var(--text-main);
+        }
+
+        .nav-tab.active {
+            background: var(--accent);
+            color: #ffffff;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        /* Main Workspace */
+        main {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+            width: 100%;
+            flex: 1;
+        }
+
+        .calc-card {
+            display: none;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .calc-card.active {
+            display: grid;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Form Inputs */
+        .input-group {
+            margin-bottom: 1.75rem;
+        }
+
+        .input-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .input-header span {
+            color: var(--text-highlight);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: var(--card-border);
+            border-radius: 3px;
+            outline: none;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .input-box {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-box:focus {
+            border-color: var(--accent);
+        }
+
+        select.input-box {
+            cursor: pointer;
+        }
+
+        /* Output / Display Section */
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--card-border);
+        }
+
+        .summary-item .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-item .value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .summary-item.highlight .value {
+            color: var(--secondary-green);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            flex: 1;
+            min-height: 220px;
+            max-height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--card-border);
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .calc-card {
+                grid-template-columns: 1fr;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            ⚡ FinCalc Pro
+        </div>
+        <span class="badge">Financial Toolkit</span>
+    </header>
+
+    <div class="nav-container">
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('sip')">📈 SIP Calculator</button>
+            <button class="nav-tab" onclick="switchTab('mf')">📊 Mutual Fund Return</button>
+            <button class="nav-tab" onclick="switchTab('emi')">🏠 EMI Calculator</button>
+            <button class="nav-tab" onclick="switchTab('cgt')">⚖️ Capital Gains Tax</button>
+            <button class="nav-tab" onclick="switchTab('fd')">🏦 Fixed Deposit (FD)</button>
+            <button class="nav-tab" onclick="switchTab('realestate')">🏢 Real Estate ROI</button>
+        </div>
+    </div>
+
+    <main>
+        <!-- 1. SIP CALCULATOR -->
+        <div id="sip" class="calc-card active">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">SIP Investment Calculator</h2>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Monthly Investment</label>
+                        <span id="sip-val-inv">₹25,000</span>
+                    </div>
+                    <input type="range" id="sip-inv" min="500" max="100000" step="500" value="25000" oninput="calculateSIP()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Expected Annual Return Rate (%)</label>
+                        <span id="sip-val-rate">12.5%</span>
+                    </div>
+                    <input type="range" id="sip-rate" min="1" max="30" step="0.5" value="12.5" oninput="calculateSIP()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Time Period (Years)</label>
+                        <span id="sip-val-yrs">10 Yr</span>
+                    </div>
+                    <input type="range" id="sip-yrs" min="1" max="40" step="1" value="10" oninput="calculateSIP()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Total Invested</div>
+                        <div class="value" id="sip-res-invested">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Est. Returns</div>
+                        <div class="value" id="sip-res-returns">₹0</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Total Future Value</div>
+                        <div class="value" id="sip-res-total">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="sipChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. MUTUAL FUND RETURN CALCULATOR -->
+        <div id="mf" class="calc-card">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">Lumpsum Mutual Fund Calculator</h2>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Total Investment Amount</label>
+                        <span id="mf-val-inv">₹1,00,000</span>
+                    </div>
+                    <input type="range" id="mf-inv" min="5000" max="10000000" step="5000" value="100000" oninput="calculateMF()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Expected Return Rate (%)</label>
+                        <span id="mf-val-rate">12%</span>
+                    </div>
+                    <input type="range" id="mf-rate" min="1" max="30" step="0.5" value="12" oninput="calculateMF()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Investment Tenure (Years)</label>
+                        <span id="mf-val-yrs">5 Yr</span>
+                    </div>
+                    <input type="range" id="mf-yrs" min="1" max="30" step="1" value="5" oninput="calculateMF()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Principal Amount</div>
+                        <div class="value" id="mf-res-invested">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Wealth Gain</div>
+                        <div class="value" id="mf-res-returns">₹0</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Maturity Value</div>
+                        <div class="value" id="mf-res-total">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="mfChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. EMI CALCULATOR -->
+        <div id="emi" class="calc-card">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">Loan EMI Calculator</h2>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Loan Amount</label>
+                        <span id="emi-val-amt">₹25,00,000</span>
+                    </div>
+                    <input type="range" id="emi-amt" min="100000" max="20000000" step="50000" value="2500000" oninput="calculateEMI()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Interest Rate (% P.A.)</label>
+                        <span id="emi-val-rate">8.5%</span>
+                    </div>
+                    <input type="range" id="emi-rate" min="1" max="20" step="0.1" value="8.5" oninput="calculateEMI()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Tenure (Years)</label>
+                        <span id="emi-val-yrs">20 Yr</span>
+                    </div>
+                    <input type="range" id="emi-yrs" min="1" max="30" step="1" value="20" oninput="calculateEMI()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Monthly EMI</div>
+                        <div class="value" id="emi-res-emi">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Total Interest</div>
+                        <div class="value" id="emi-res-interest">₹0</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Total Payable Amount</div>
+                        <div class="value" id="emi-res-total">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="emiChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. CAPITAL GAIN TAX CALCULATOR -->
+        <div id="cgt" class="calc-card">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">Capital Gain Tax Calculator</h2>
+                <div class="input-group">
+                    <label class="input-header">Asset Type</label>
+                    <select id="cgt-type" class="input-box" onchange="calculateCGT()">
+                        <option value="equity">Equity / Equity Mutual Funds</option>
+                        <option value="realestate">Real Estate / Property</option>
+                        <option value="other">Debt Mutual Funds / Gold / Others</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Purchase Price</label>
+                        <span id="cgt-val-buy">₹5,00,000</span>
+                    </div>
+                    <input type="range" id="cgt-buy" min="10000" max="20000000" step="10000" value="500000" oninput="calculateCGT()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Sale Price</label>
+                        <span id="cgt-val-sell">₹8,00,000</span>
+                    </div>
+                    <input type="range" id="cgt-sell" min="10000" max="30000000" step="10000" value="800000" oninput="calculateCGT()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Holding Period (Months)</label>
+                        <span id="cgt-val-months">18 Mo</span>
+                    </div>
+                    <input type="range" id="cgt-months" min="1" max="120" step="1" value="18" oninput="calculateCGT()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Total Profit (Capital Gain)</div>
+                        <div class="value" id="cgt-res-profit">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Gain Classification</div>
+                        <div class="value" id="cgt-res-term" style="font-size: 1rem;">-</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Estimated Tax Liability</div>
+                        <div class="value" id="cgt-res-tax">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="cgtChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. FD CALCULATOR -->
+        <div id="fd" class="calc-card">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">Fixed Deposit (FD) Calculator</h2>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Deposit Amount</label>
+                        <span id="fd-val-amt">₹2,00,000</span>
+                    </div>
+                    <input type="range" id="fd-amt" min="5000" max="5000000" step="5000" value="200000" oninput="calculateFD()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Annual Interest Rate (%)</label>
+                        <span id="fd-val-rate">7.0%</span>
+                    </div>
+                    <input type="range" id="fd-rate" min="1" max="15" step="0.1" value="7.0" oninput="calculateFD()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Tenure (Years)</label>
+                        <span id="fd-val-yrs">5 Yr</span>
+                    </div>
+                    <input type="range" id="fd-yrs" min="1" max="20" step="1" value="5" oninput="calculateFD()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Principal Amount</div>
+                        <div class="value" id="fd-res-invested">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Total Interest Earned</div>
+                        <div class="value" id="fd-res-returns">₹0</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Maturity Amount</div>
+                        <div class="value" id="fd-res-total">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="fdChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. REAL ESTATE RETURN CALCULATOR -->
+        <div id="realestate" class="calc-card">
+            <div class="inputs-section">
+                <h2 style="margin-bottom: 1.5rem;">Real Estate ROI Calculator</h2>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Property Purchase Price</label>
+                        <span id="re-val-buy">₹50,00,000</span>
+                    </div>
+                    <input type="range" id="re-buy" min="500000" max="50000000" step="100000" value="5000000" oninput="calculateRE()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Monthly Rental Income</label>
+                        <span id="re-val-rent">₹20,000</span>
+                    </div>
+                    <input type="range" id="re-rent" min="0" max="300000" step="1000" value="20000" oninput="calculateRE()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Annual Property Appreciation (%)</label>
+                        <span id="re-val-appr">5.0%</span>
+                    </div>
+                    <input type="range" id="re-appr" min="0" max="20" step="0.5" value="5.0" oninput="calculateRE()">
+                </div>
+                <div class="input-group">
+                    <div class="input-header">
+                        <label>Holding Period (Years)</label>
+                        <span id="re-val-yrs">10 Yr</span>
+                    </div>
+                    <input type="range" id="re-yrs" min="1" max="30" step="1" value="10" oninput="calculateRE()">
+                </div>
+            </div>
+            <div class="results-container">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Total Rental Income</div>
+                        <div class="value" id="re-res-rent">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Property Value</div>
+                        <div class="value" id="re-res-val">₹0</div>
+                    </div>
+                    <div class="summary-item highlight" style="grid-column: span 2;">
+                        <div class="label">Total Gain (Value Appr + Rent)</div>
+                        <div class="value" id="re-res-total">₹0</div>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="reChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 FinCalc Pro. Designed for high-performance financial decisions.</p>
+    </footer>
+
+    <script>
+        // Global Chart Instances
+        const charts = {};
+
+        // Helper: Format Currency (INR)
+        function formatINR(val) {
+            return '₹' + Math.round(val).toLocaleString('en-IN');
+        }
+
+        // Initialize Chart.js Doughnut
+        function initChart(canvasId) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            return new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Invested / Principal', 'Gains / Interest'],
+                    datasets: [{
+                        data: [50, 50],
+                        backgroundColor: ['#334155', '#10b981'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', size: 12 } }
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+
+        // Tab Switching Logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.calc-card').forEach(card => card.classList.remove('active'));
+
+            event.currentTarget.classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        // 1. SIP Calculation
+        function calculateSIP() {
+            const monthly = parseFloat(document.getElementById('sip-inv').value);
+            const rate = parseFloat(document.getElementById('sip-rate').value) / 12 / 100;
+            const years = parseFloat(document.getElementById('sip-yrs').value);
+            const months = years * 12;
+
+            document.getElementById('sip-val-inv').innerText = formatINR(monthly);
+            document.getElementById('sip-val-rate').innerText = document.getElementById('sip-rate').value + '%';
+            document.getElementById('sip-val-yrs').innerText = years + ' Yr';
+
+            const invested = monthly * months;
+            const total = monthly * ((Math.pow(1 + rate, months) - 1) / rate) * (1 + rate);
+            const returns = total - invested;
+
+            document.getElementById('sip-res-invested').innerText = formatINR(invested);
+            document.getElementById('sip-res-returns').innerText = formatINR(returns);
+            document.getElementById('sip-res-total').innerText = formatINR(total);
+
+            updateChart('sipChart', ['Invested', 'Est. Returns'], [invested, returns], ['#334155', '#10b981']);
+        }
+
+        // 2. Mutual Fund Lumpsum Calculation
+        function calculateMF() {
+            const principal = parseFloat(document.getElementById('mf-inv').value);
+            const rate = parseFloat(document.getElementById('mf-rate').value) / 100;
+            const years = parseFloat(document.getElementById('mf-yrs').value);
+
+            document.getElementById('mf-val-inv').innerText = formatINR(principal);
+            document.getElementById('mf-val-rate').innerText = document.getElementById('mf-rate').value + '%';
+            document.getElementById('mf-val-yrs').innerText = years + ' Yr';
+
+            const total = principal * Math.pow(1 + rate, years);
+            const returns = total - principal;
+
+            document.getElementById('mf-res-invested').innerText = formatINR(principal);
+            document.getElementById('mf-res-returns').innerText = formatINR(returns);
+            document.getElementById('mf-res-total').innerText = formatINR(total);
+
+            updateChart('mfChart', ['Principal', 'Wealth Gain'], [principal, returns], ['#334155', '#38bdf8']);
+        }
+
+        // 3. EMI Calculation
+        function calculateEMI() {
+            const principal = parseFloat(document.getElementById('emi-amt').value);
+            const rate = parseFloat(document.getElementById('emi-rate').value) / 12 / 100;
+            const years = parseFloat(document.getElementById('emi-yrs').value);
+            const months = years * 12;
+
+            document.getElementById('emi-val-amt').innerText = formatINR(principal);
+            document.getElementById('emi-val-rate').innerText = document.getElementById('emi-rate').value + '%';
+            document.getElementById('emi-val-yrs').innerText = years + ' Yr';
+
+            const emi = (principal * rate * Math.pow(1 + rate, months)) / (Math.pow(1 + rate, months) - 1);
+            const totalPayable = emi * months;
+            const interest = totalPayable - principal;
+
+            document.getElementById('emi-res-emi').innerText = formatINR(emi);
+            document.getElementById('emi-res-interest').innerText = formatINR(interest);
+            document.getElementById('emi-res-total').innerText = formatINR(totalPayable);
+
+            updateChart('emiChart', ['Principal Loan Amount', 'Total Interest'], [principal, interest], ['#6366f1', '#f43f5e']);
+        }
+
+        // 4. Capital Gain Tax Calculation
+        function calculateCGT() {
+            const type = document.getElementById('cgt-type').value;
+            const buy = parseFloat(document.getElementById('cgt-buy').value);
+            const sell = parseFloat(document.getElementById('cgt-sell').value);
+            const months = parseFloat(document.getElementById('cgt-months').value);
+
+            document.getElementById('cgt-val-buy').innerText = formatINR(buy);
+            document.getElementById('cgt-val-sell').innerText = formatINR(sell);
+            document.getElementById('cgt-val-months').innerText = months + ' Mo';
+
+            const profit = Math.max(0, sell - buy);
+            let tax = 0;
+            let termClass = '';
+
+            if (type === 'equity') {
+                if (months > 12) {
+                    termClass = 'LTCG (Long-Term)';
+                    const taxableProfit = Math.max(0, profit - 125000); // 1.25 Lakh LTCG exemption rule
+                    tax = taxableProfit * 0.125; // 12.5% LTCG
+                } else {
+                    termClass = 'STCG (Short-Term)';
+                    tax = profit * 0.20; // 20% STCG
+                }
+            } else {
+                if (months > 24) {
+                    termClass = 'LTCG (Long-Term)';
+                    tax = profit * 0.125; // Standard 12.5% without indexation
+                } else {
+                    termClass = 'STCG (Short-Term)';
+                    tax = profit * 0.30; // Approx standard slab assumption
+                }
+            }
+
+            document.getElementById('cgt-res-profit').innerText = formatINR(profit);
+            document.getElementById('cgt-res-term').innerText = termClass;
+            document.getElementById('cgt-res-tax').innerText = formatINR(tax);
+
+            const netProfit = profit - tax;
+            updateChart('cgtChart', ['Net Profit', 'Estimated Tax'], [netProfit, tax], ['#10b981', '#ef4444']);
+        }
+
+        // 5. FD Calculation
+        function calculateFD() {
+            const principal = parseFloat(document.getElementById('fd-amt').value);
+            const rate = parseFloat(document.getElementById('fd-rate').value) / 100;
+            const years = parseFloat(document.getElementById('fd-yrs').value);
+
+            document.getElementById('fd-val-amt').innerText = formatINR(principal);
+            document.getElementById('fd-val-rate').innerText = document.getElementById('fd-rate').value + '%';
+            document.getElementById('fd-val-yrs').innerText = years + ' Yr';
+
+            // Quarterly Compounding Standard
+            const total = principal * Math.pow(1 + rate / 4, 4 * years);
+            const returns = total - principal;
+
+            document.getElementById('fd-res-invested').innerText = formatINR(principal);
+            document.getElementById('fd-res-returns').innerText = formatINR(returns);
+            document.getElementById('fd-res-total').innerText = formatINR(total);
+
+            updateChart('fdChart', ['Principal Deposit', 'Interest Earned'], [principal, returns], ['#334155', '#eab308']);
+        }
+
+        // 6. Real Estate ROI Calculation
+        function calculateRE() {
+            const buy = parseFloat(document.getElementById('re-buy').value);
+            const monthlyRent = parseFloat(document.getElementById('re-rent').value);
+            const apprRate = parseFloat(document.getElementById('re-appr').value) / 100;
+            const years = parseFloat(document.getElementById('re-yrs').value);
+
+            document.getElementById('re-val-buy').innerText = formatINR(buy);
+            document.getElementById('re-val-rent').innerText = formatINR(monthlyRent);
+            document.getElementById('re-val-appr').innerText = document.getElementById('re-appr').value + '%';
+            document.getElementById('re-val-yrs').innerText = years + ' Yr';
+
+            const totalRent = monthlyRent * 12 * years;
+            const futureVal = buy * Math.pow(1 + apprRate, years);
+            const netGain = (futureVal - buy) + totalRent;
+
+            document.getElementById('re-res-rent').innerText = formatINR(totalRent);
+            document.getElementById('re-res-val').innerText = formatINR(futureVal);
+            document.getElementById('re-res-total').innerText = formatINR(netGain);
+
+            updateChart('reChart', ['Property Appreciation', 'Total Rent Earned'], [futureVal - buy, totalRent], ['#8b5cf6', '#06b6d4']);
+        }
+
+        // Generic Chart Updater
+        function updateChart(canvasId, labels, data, colors) {
+            if (!charts[canvasId]) {
+                charts[canvasId] = initChart(canvasId);
+            }
+            charts[canvasId].data.labels = labels;
+            charts[canvasId].data.datasets[0].data = data;
+            charts[canvasId].data.datasets[0].backgroundColor = colors;
+            charts[canvasId].update();
+        }
+
+        // Initial Calculations on Page Load
+        window.onload = function() {
+            calculateSIP();
+            calculateMF();
+            calculateEMI();
+            calculateCGT();
+            calculateFD();
+            calculateRE();
+        };
+    </script>
+
+   
+
+</body>
+</html>
